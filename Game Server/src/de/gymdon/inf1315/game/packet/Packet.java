@@ -8,7 +8,7 @@ import de.gymdon.inf1315.game.server.Client;
 
 public abstract class Packet {
 
-    public static final Map<Integer, Class<? extends Packet>> packetTypes = new HashMap<Integer, Class<? extends Packet>>();
+    public static final Map<Short, Class<? extends Packet>> packetTypes = new HashMap<Short, Class<? extends Packet>>();
 
     protected Client client;
     
@@ -18,6 +18,7 @@ public abstract class Packet {
     
     public abstract void handlePacket() throws IOException;
     public abstract void send() throws IOException;
+    public abstract short getId();
 
     public static Packet newPacket(int id, Client c) {
 	if (packetTypes.containsKey(id))
@@ -30,6 +31,7 @@ public abstract class Packet {
     }
     
     static {
-	packetTypes.put(PacketHello.ID, PacketHello.class);
+	packetTypes.put(new PacketHello(null).getId(), PacketHello.class);
+	packetTypes.put(new PacketHeartbeat(null).getId(), PacketHeartbeat.class);
     }
 }

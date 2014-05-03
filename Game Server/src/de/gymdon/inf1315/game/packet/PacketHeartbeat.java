@@ -8,8 +8,9 @@ import de.gymdon.inf1315.game.server.Client;
 
 public class PacketHeartbeat extends Packet {
     
+    public static final short ID = 1;
     public boolean response;
-    public String payload;
+    public byte[] payload;
 
     public PacketHeartbeat(Client c) {
 	super(c);
@@ -19,7 +20,8 @@ public class PacketHeartbeat extends Packet {
     public void handlePacket() throws IOException {
 	DataInputStream in = client.getInputStream();
 	response = in.readBoolean();
-	payload = in.readUTF();
+	payload = new byte[in.readShort()];
+	in.read(payload);
 	if(!response) {
 	    PacketHeartbeat resp = new PacketHeartbeat(client);
 	    resp.response = true;
@@ -32,8 +34,14 @@ public class PacketHeartbeat extends Packet {
     @Override
     public void send() throws IOException {
 	DataOutputStream out = client.getOutputStream();
+	out.writeInt(ID);
 	out.writeBoolean(response);
-	out.writeUTF(payload);
+	out.writeShort(payload.length);
+	out.write(payload);
     }
 
+    @Override
+    public short getId() {
+	return ID;
+    }
 }

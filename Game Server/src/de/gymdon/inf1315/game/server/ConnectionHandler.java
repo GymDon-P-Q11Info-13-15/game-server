@@ -1,9 +1,7 @@
 package de.gymdon.inf1315.game.server;
 
 import java.io.DataInputStream;
-import java.io.EOFException;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.Random;
 
@@ -42,14 +40,11 @@ public class ConnectionHandler {
 		    heartbeat.response = false;
 		    byte[] bytes = new byte[40];
 		    new Random().nextBytes(bytes);
-		    heartbeat.payload = new String(bytes, Charset.forName("ASCII"));
+		    heartbeat.payload = bytes;
 		    heartbeat.send();
 		}
 	    } catch (IOException e) {
-		if (e instanceof EOFException)
-		    c.leave(e.getMessage());
-		else
-		    e.printStackTrace();
+		c.leave(e.getMessage());
 	    }
 	    if(c.left())
 		i.remove();

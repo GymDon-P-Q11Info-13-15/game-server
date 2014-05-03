@@ -9,7 +9,7 @@ import de.gymdon.inf1315.game.server.Server;
 
 public class PacketHello extends Packet {
 
-    public static final int ID = 0;
+    public static final short ID = 0;
     public boolean serverHello;
     public String serverName;
 
@@ -38,6 +38,11 @@ public class PacketHello extends Packet {
 	out.writeBoolean(serverHello);
 	if (serverHello)
 	    out.writeUTF(serverName);
+    }
+
+    @Override
+    public short getId() {
+	return ID;
     }
 
 }
