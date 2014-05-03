@@ -10,7 +10,7 @@ public class Server implements Runnable {
     public static final int PORT = 22422;
     public static final String NAME = "Main Server";
     public static Server instance;
-    
+
     List<Client> clientList = new ArrayList<Client>();
     private boolean running = false;
     private Timer timer;
@@ -21,7 +21,7 @@ public class Server implements Runnable {
     }
 
     public Server() {
-	if(instance != null)
+	if (instance != null)
 	    throw new RuntimeException("Already running");
 	instance = this;
 	this.connectionHandler = new ConnectionHandler(this);

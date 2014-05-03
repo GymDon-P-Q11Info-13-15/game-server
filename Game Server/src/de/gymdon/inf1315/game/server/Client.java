@@ -5,7 +5,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-public class Client {
+import de.gymdon.inf1315.game.packet.Remote;
+
+public class Client implements Remote{
 
     private Socket socket;
     private DataOutputStream out;
@@ -19,6 +21,7 @@ public class Client {
 	in = new DataInputStream(socket.getInputStream());
     }
 
+    @Override
     public Socket getSocket() {
 	if(left && !socket.isClosed())
 	    try {
@@ -28,12 +31,14 @@ public class Client {
 	return socket;
     }
 
+    @Override
     public DataOutputStream getOutputStream() {
 	if(left)
 	    throw new RuntimeException("Client left");
 	return out;
     }
 
+    @Override
     public DataInputStream getInputStream() {
 	if(left)
 	    throw new RuntimeException("Client left");
@@ -52,11 +57,13 @@ public class Client {
     public Game getGame() {
 	return game;
     }
-    
+
+    @Override
     public boolean left() {
 	return left;
     }
 
+    @Override
     public void leave(String message) {
 	if(left)
 	    return;
@@ -70,5 +77,15 @@ public class Client {
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
+    }
+
+    @Override
+    public boolean isServer() {
+	return false;
+    }
+
+    @Override
+    public boolean isClient() {
+	return true;
     }
 }

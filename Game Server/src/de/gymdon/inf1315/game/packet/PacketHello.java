@@ -4,7 +4,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import de.gymdon.inf1315.game.server.Client;
 import de.gymdon.inf1315.game.server.Server;
 
 public class PacketHello extends Packet {
@@ -13,18 +12,18 @@ public class PacketHello extends Packet {
     public boolean serverHello;
     public String serverName;
 
-    public PacketHello(Client c) {
-	super(c);
+    public PacketHello(Remote r) {
+	super(r);
     }
 
     @Override
     public void handlePacket() throws IOException {
-	DataInputStream in = client.getInputStream();
+	DataInputStream in = remote.getInputStream();
 	serverHello = in.readBoolean();
 	if (serverHello)
 	    serverName = in.readUTF();
 	else {
-	    PacketHello resp = new PacketHello(client);
+	    PacketHello resp = new PacketHello(remote);
 	    resp.serverHello = true;
 	    resp.serverName = Server.instance.getName();
 	    resp.send();
@@ -33,7 +32,7 @@ public class PacketHello extends Packet {
 
     @Override
     public void send() throws IOException {
-	DataOutputStream out = client.getOutputStream();
+	DataOutputStream out = remote.getOutputStream();
 	out.writeShort(ID);
 	out.writeBoolean(serverHello);
 	if (serverHello)

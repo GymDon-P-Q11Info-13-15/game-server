@@ -28,14 +28,14 @@ public class ConnectionHandler {
 		if (din.available() >= 2) {
 		    short id = din.readShort();
 		    Packet p = Packet.newPacket(id, c);
-		    if(p != null)
+		    if (p != null)
 			p.handlePacket();
 		    else
 			c.leave("Invalid Packet");
 		}
-		if(c.getSocket().isClosed())
+		if (c.getSocket().isClosed())
 		    c.leave("Socket closed");
-		if(ticksRunning%40 == 0) {
+		if (ticksRunning % 40 == 0) {
 		    PacketHeartbeat heartbeat = new PacketHeartbeat(c);
 		    heartbeat.response = false;
 		    byte[] bytes = new byte[43];
@@ -46,7 +46,7 @@ public class ConnectionHandler {
 	    } catch (IOException e) {
 		c.leave(e.getMessage());
 	    }
-	    if(c.left())
+	    if (c.left())
 		i.remove();
 	}
     }
