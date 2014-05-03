@@ -1,4 +1,5 @@
 game-server
 ===========
 
-Server will auto-deploy all pushed commits.
+Operating on port `22422`
+Test-Server is online at `pvpctutorials.de:22422`
