@@ -8,31 +8,65 @@ import java.util.ArrayList;
 public class Server implements Runnable {
 
     public static final int PORT = 22422;
+    public static final String NAME = "Main Server";
+    public static Server instance;
+    
     List<Client> clientList = new ArrayList<Client>();
+    private boolean running = false;
+    private Timer timer;
+    private ConnectionHandler connectionHandler;
 
     public static void main(String[] args) {
 	new Server();
     }
 
     public Server() {
+	if(instance != null)
+	    throw new RuntimeException("Already running");
+	instance = this;
+	this.connectionHandler = new ConnectionHandler(this);
+	this.timer = new Timer(connectionHandler);
 	this.run();
     }
 
     public void run() {
+	running = true;
+	timer.start();
 	ServerSocket ss;
 	try {
 	    ss = new ServerSocket(PORT);
+	    System.out.println("Started server on port " + PORT);
 	} catch (IOException e) {
 	    e.printStackTrace();
 	    return;
 	}
-	while (true) {
+	while (running) {
 	    try {
 		Socket s = ss.accept();
 		clientList.add(new Client(s));
+		System.out.println("New client: "
+			+ s.getInetAddress().getCanonicalHostName());
 	    } catch (IOException e) {
 		e.printStackTrace();
 	    }
 	}
+	timer.stopTimer();
+	try {
+	    timer.join();
+	} catch (InterruptedException e1) {
+	}
+	try {
+	    ss.close();
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+    }
+
+    public void stop() {
+	running = false;
+    }
+
+    public String getName() {
+	return NAME;
     }
 }
