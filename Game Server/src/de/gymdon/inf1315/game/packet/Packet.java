@@ -20,7 +20,7 @@ public abstract class Packet {
     public abstract void send() throws IOException;
     public abstract short getId();
 
-    public static Packet newPacket(int id, Client c) {
+    public static Packet newPacket(short id, Client c) {
 	if (packetTypes.containsKey(id))
 	    try {
 		return packetTypes.get(id).getConstructor(Client.class).newInstance(c);

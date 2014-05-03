@@ -34,7 +34,7 @@ public class PacketHello extends Packet {
     @Override
     public void send() throws IOException {
 	DataOutputStream out = client.getOutputStream();
-	out.writeInt(ID);
+	out.writeShort(ID);
 	out.writeBoolean(serverHello);
 	if (serverHello)
 	    out.writeUTF(serverName);

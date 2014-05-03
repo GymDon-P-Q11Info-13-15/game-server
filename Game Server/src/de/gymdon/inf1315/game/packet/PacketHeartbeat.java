@@ -34,7 +34,7 @@ public class PacketHeartbeat extends Packet {
     @Override
     public void send() throws IOException {
 	DataOutputStream out = client.getOutputStream();
-	out.writeInt(ID);
+	out.writeShort(ID);
 	out.writeBoolean(response);
 	out.writeShort(payload.length);
 	out.write(payload);

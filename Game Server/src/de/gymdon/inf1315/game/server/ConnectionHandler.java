@@ -25,8 +25,8 @@ public class ConnectionHandler {
 	    Client c = i.next();
 	    try {
 		DataInputStream din = c.getInputStream();
-		if (din.available() >= 4) {
-		    int id = din.readInt();
+		if (din.available() >= 2) {
+		    short id = din.readShort();
 		    Packet p = Packet.newPacket(id, c);
 		    if(p != null)
 			p.handlePacket();
@@ -38,7 +38,7 @@ public class ConnectionHandler {
 		if(ticksRunning%40 == 0) {
 		    PacketHeartbeat heartbeat = new PacketHeartbeat(c);
 		    heartbeat.response = false;
-		    byte[] bytes = new byte[40];
+		    byte[] bytes = new byte[43];
 		    new Random().nextBytes(bytes);
 		    heartbeat.payload = bytes;
 		    heartbeat.send();

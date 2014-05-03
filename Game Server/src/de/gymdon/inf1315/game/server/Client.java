@@ -20,8 +20,11 @@ public class Client {
     }
 
     public Socket getSocket() {
-	if(left)
-	    throw new RuntimeException("Client left");
+	if(left && !socket.isClosed())
+	    try {
+		socket.close();
+	    } catch (IOException e) {
+	    }
 	return socket;
     }
 
