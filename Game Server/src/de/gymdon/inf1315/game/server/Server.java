@@ -31,7 +31,6 @@ public class Server implements Runnable {
 
     public void run() {
 	running = true;
-	timer.start();
 	ServerSocket ss;
 	try {
 	    ss = new ServerSocket(PORT);
@@ -40,6 +39,7 @@ public class Server implements Runnable {
 	    e.printStackTrace();
 	    return;
 	}
+	timer.start();
 	while (running) {
 	    try {
 		Socket s = ss.accept();
