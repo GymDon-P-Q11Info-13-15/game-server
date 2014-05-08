@@ -7,6 +7,7 @@ import java.util.Random;
 
 import de.gymdon.inf1315.game.packet.Packet;
 import de.gymdon.inf1315.game.packet.PacketHeartbeat;
+import de.gymdon.inf1315.game.packet.Remote;
 
 public class ConnectionHandler {
 
@@ -21,22 +22,23 @@ public class ConnectionHandler {
 	ticksRunning++;
 	if (server.clientList.isEmpty())
 	    return;
-	for (Iterator<Client> i = server.clientList.iterator(); i.hasNext();) {
-	    Client c = i.next();
+	for (Iterator<Remote> i = server.clientList.iterator(); i.hasNext();) {
+	    Remote r = i.next();
 	    try {
-		DataInputStream din = c.getInputStream();
+		DataInputStream din = r.getInputStream();
 		if (din.available() >= 2) {
 		    short id = din.readShort();
-		    Packet p = Packet.newPacket(id, c);
+		    Packet p = Packet.newPacket(id, r);
 		    if (p != null)
 			p.handlePacket();
 		    else
-			c.leave("Invalid Packet");
+			r.leave("Invalid Packet");
 		}
-		if (c.getSocket().isClosed())
-		    c.leave("Socket closed");
-		if (ticksRunning % 40 == 0) {
-		    PacketHeartbeat heartbeat = new PacketHeartbeat(c);
+		if (r.getSocket().isClosed())
+		    r.leave("Socket closed");
+		long now = System.currentTimeMillis();
+		if (r.getLastPacketTime() - now >= 2000) {
+		    PacketHeartbeat heartbeat = new PacketHeartbeat(r);
 		    heartbeat.response = false;
 		    byte[] bytes = new byte[43];
 		    new Random().nextBytes(bytes);
@@ -44,9 +46,9 @@ public class ConnectionHandler {
 		    heartbeat.send();
 		}
 	    } catch (IOException e) {
-		c.leave(e.getMessage());
+		r.leave(e.getMessage());
 	    }
-	    if (c.left())
+	    if (r.left())
 		i.remove();
 	}
     }

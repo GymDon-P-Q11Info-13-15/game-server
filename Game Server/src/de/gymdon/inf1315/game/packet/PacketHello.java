@@ -18,6 +18,7 @@ public class PacketHello extends Packet {
 
     @Override
     public void handlePacket() throws IOException {
+	super.handlePacket();
 	DataInputStream in = remote.getInputStream();
 	serverHello = in.readBoolean();
 	if (serverHello)
@@ -32,6 +33,7 @@ public class PacketHello extends Packet {
 
     @Override
     public void send() throws IOException {
+	super.send();
 	DataOutputStream out = remote.getOutputStream();
 	out.writeShort(ID);
 	out.writeBoolean(serverHello);

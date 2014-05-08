@@ -5,13 +5,15 @@ import java.util.*;
 import java.io.*;
 import java.util.ArrayList;
 
+import de.gymdon.inf1315.game.packet.Remote;
+
 public class Server implements Runnable {
 
     public static final int PORT = 22422;
     public static final String NAME = "Main Server";
     public static Server instance;
 
-    List<Client> clientList = new ArrayList<Client>();
+    List<Remote> clientList = new ArrayList<Remote>();
     private boolean running = false;
     private Timer timer;
     private ConnectionHandler connectionHandler;

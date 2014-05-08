@@ -10,7 +10,7 @@ public abstract class Remote {
     private Socket socket;
     private DataInputStream in;
     private DataOutputStream out;
-    private long lastPacketSend;
+    private long lastPacket;
     private boolean left = false;
 
     public Remote(Socket s) throws IOException {
@@ -54,6 +54,14 @@ public abstract class Remote {
 	    socket.close();
 	} catch (IOException e) {
 	}
+    }
+    
+    public void notifyPacket() {
+	lastPacket = System.currentTimeMillis();
+    }
+    
+    public long getLastPacketTime() {
+	return lastPacket;
     }
 
     public abstract boolean isServer();

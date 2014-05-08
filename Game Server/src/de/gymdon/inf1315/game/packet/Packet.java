@@ -14,9 +14,14 @@ public abstract class Packet {
 	this.remote = r;
     }
 
-    public abstract void handlePacket() throws IOException;
+    public void handlePacket() throws IOException {
+	remote.notifyPacket();
+    }
 
-    public abstract void send() throws IOException;
+    public void send() throws IOException {
+	remote.notifyPacket();
+	remote.getOutputStream().writeShort(getId());
+    }
 
     public abstract short getId();
 
