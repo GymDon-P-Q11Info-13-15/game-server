@@ -3,6 +3,7 @@ package de.gymdon.inf1315.game.server;
 import java.io.IOException;
 import java.net.Socket;
 
+import de.gymdon.inf1315.game.Game;
 import de.gymdon.inf1315.game.packet.Remote;
 
 public class Client extends Remote {

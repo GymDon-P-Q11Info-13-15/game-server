@@ -1,4 +1,6 @@
-package de.gymdon.inf1315.game.server;
+package de.gymdon.inf1315.game;
+
+import de.gymdon.inf1315.game.server.Client;
 
 public class Game {
     private Client clientA;
