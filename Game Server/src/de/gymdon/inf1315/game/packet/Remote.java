@@ -20,11 +20,6 @@ public abstract class Remote {
     }
 
     public Socket getSocket() {
-	if (left() && !socket.isClosed())
-	    try {
-		socket.close();
-	    } catch (IOException e) {
-	    }
 	return socket;
     }
 

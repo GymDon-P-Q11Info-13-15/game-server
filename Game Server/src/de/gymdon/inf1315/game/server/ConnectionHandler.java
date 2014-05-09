@@ -12,14 +12,12 @@ import de.gymdon.inf1315.game.packet.Remote;
 public class ConnectionHandler {
 
     private Server server;
-    private int ticksRunning = 0;
 
     public ConnectionHandler(Server s) {
 	this.server = s;
     }
 
     public void update() {
-	ticksRunning++;
 	if (server.clientList.isEmpty())
 	    return;
 	for (Iterator<Remote> i = server.clientList.iterator(); i.hasNext();) {
