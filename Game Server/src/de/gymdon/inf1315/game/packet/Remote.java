@@ -1,5 +1,7 @@
 package de.gymdon.inf1315.game.packet;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -15,8 +17,8 @@ public abstract class Remote {
 
     public Remote(Socket s) throws IOException {
 	this.socket = s;
-	out = new DataOutputStream(socket.getOutputStream());
-	in = new DataInputStream(socket.getInputStream());
+	out = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+	in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
     }
 
     public Socket getSocket() {
