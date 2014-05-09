@@ -39,6 +39,7 @@ public class PacketHello extends Packet {
 	out.writeBoolean(serverHello);
 	if (serverHello)
 	    out.writeUTF(serverName);
+	out.flush();
     }
 
     @Override
