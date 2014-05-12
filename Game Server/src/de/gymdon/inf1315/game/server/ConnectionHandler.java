@@ -30,7 +30,7 @@ public class ConnectionHandler {
 		    if (p != null)
 			p.handlePacket();
 		    else
-			r.leave("Invalid Packet");
+			r.kick("Invalid Packet");
 		}
 		if (r.getSocket().isClosed())
 		    r.leave("Socket closed");
@@ -44,7 +44,7 @@ public class ConnectionHandler {
 		    heartbeat.send();
 		}
 	    } catch (IOException e) {
-		r.leave(e.getMessage());
+		r.leave(e.getMessage() == null ? e.getClass().getSimpleName() : e.getMessage());
 	    }
 	    if (r.left())
 		i.remove();

@@ -31,16 +31,11 @@ public class PacketHeartbeat extends Packet {
 
     @Override
     public void send() throws IOException {
-	super.send();
 	DataOutputStream out = remote.getOutputStream();
+	out.writeShort(ID);
 	out.writeBoolean(response);
 	out.writeShort(payload.length);
 	out.write(payload);
-	out.flush();
-    }
-
-    @Override
-    public short getId() {
-	return ID;
+	super.send();
     }
 }

@@ -6,6 +6,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Arrays;
 
 public abstract class Remote {
 
@@ -45,12 +46,31 @@ public abstract class Remote {
 	if (left)
 	    return;
 	left = true;
-	System.out.println(socket.getInetAddress().getCanonicalHostName()
-		+ " left" + (message != null ? ": " + message : ""));
+	System.out.println(socket.getInetAddress().getCanonicalHostName() + " left" +  ": " + message);
+	if(message == null)
+	    throw new NullPointerException();
 	try {
 	    socket.close();
 	} catch (IOException e) {
 	}
+    }
+    
+    public void kick(String message, Object... args) {
+	if (left)
+	    return;
+	PacketKick kick = new PacketKick(this);
+	kick.message = message;
+	kick.args = args;
+	System.out.println(socket.getInetAddress().getCanonicalHostName() + " was kicked: " + message + Arrays.toString(args));
+	try {
+	    kick.send();
+	} catch (IOException e) {
+	}
+	try {
+	    socket.close();
+	} catch (IOException e) {
+	}
+	left = true;
     }
     
     public void notifyPacket() {

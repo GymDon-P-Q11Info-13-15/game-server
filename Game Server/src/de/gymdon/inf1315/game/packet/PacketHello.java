@@ -11,6 +11,7 @@ public class PacketHello extends Packet {
     public static final short ID = 0;
     public boolean serverHello;
     public String serverName;
+    public int protocolVersion;
 
     public PacketHello(Remote r) {
 	super(r);
@@ -29,22 +30,20 @@ public class PacketHello extends Packet {
 	    resp.serverName = Server.instance.preferences.server_name;
 	    resp.send();
 	}
+	int version = in.readInt();
+	if(version != Packet.PROTOCOL_VERSION) {
+	    remote.kick("protocol.version.incompatible", version, Packet.PROTOCOL_VERSION);
+	}
     }
 
     @Override
     public void send() throws IOException {
-	super.send();
 	DataOutputStream out = remote.getOutputStream();
 	out.writeShort(ID);
 	out.writeBoolean(serverHello);
 	if (serverHello)
 	    out.writeUTF(serverName);
-	out.flush();
+	out.writeInt(Packet.PROTOCOL_VERSION);
+	super.send();
     }
-
-    @Override
-    public short getId() {
-	return ID;
-    }
-
 }
