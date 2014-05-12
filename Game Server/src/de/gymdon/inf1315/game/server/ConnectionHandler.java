@@ -35,7 +35,7 @@ public class ConnectionHandler {
 		if (r.getSocket().isClosed())
 		    r.leave("Socket closed");
 		long now = System.currentTimeMillis();
-		if (r.getLastPacketTime() - now >= 2000) {
+		if (now - r.getLastPacketTime() >= 2000) {
 		    PacketHeartbeat heartbeat = new PacketHeartbeat(r);
 		    heartbeat.response = false;
 		    byte[] bytes = new byte[43];
