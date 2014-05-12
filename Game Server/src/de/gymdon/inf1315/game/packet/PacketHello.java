@@ -26,7 +26,7 @@ public class PacketHello extends Packet {
 	else {
 	    PacketHello resp = new PacketHello(remote);
 	    resp.serverHello = true;
-	    resp.serverName = Server.instance.getName();
+	    resp.serverName = Server.instance.preferences.server_name;
 	    resp.send();
 	}
     }
