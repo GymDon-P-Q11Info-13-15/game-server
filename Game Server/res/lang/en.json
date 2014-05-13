@@ -1,0 +1,11 @@
+{
+	"translation.missing": "Missing translation \"%s\"",
+	"server.started": "Started server on %s:%d",
+	"client.new": "New client: %s",
+	"client.left": "Client left: %s",
+	"client.kicked": "Client %s was kicked: \"%s\"",
+	"protocol.version.incompatible": "Protocol version incompatible (expected %2$d and got %1$d)",
+	"updated.version": "Updated %s to version %s",
+	"file.created": "Created file %s",
+	"game.ended": "Game ended: %s"
+}

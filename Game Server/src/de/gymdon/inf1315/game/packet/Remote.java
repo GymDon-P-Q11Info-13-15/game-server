@@ -6,7 +6,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Arrays;
+import java.util.*;
+
+import de.gymdon.inf1315.game.Translation;
 
 public abstract class Remote {
 
@@ -15,6 +17,7 @@ public abstract class Remote {
     private DataOutputStream out;
     private long lastPacket;
     private boolean left = false;
+    public Map<String,Object> properties = new HashMap<String,Object>();
 
     public Remote(Socket s) throws IOException {
 	this.socket = s;
@@ -46,7 +49,10 @@ public abstract class Remote {
 	if (left)
 	    return;
 	left = true;
-	System.out.println(socket.getInetAddress().getCanonicalHostName() + " left" +  ": " + message);
+	if(properties.containsKey("translation")) {
+	    Translation t = (Translation)properties.get("translation");
+	    System.out.println(t.translate("client.left", message));
+	}
 	if(message == null)
 	    throw new NullPointerException();
 	try {
@@ -61,7 +67,10 @@ public abstract class Remote {
 	PacketKick kick = new PacketKick(this);
 	kick.message = message;
 	kick.args = args;
-	System.out.println(socket.getInetAddress().getCanonicalHostName() + " was kicked: " + message + Arrays.toString(args));
+	if(properties.containsKey("translation")) {
+	    Translation t = (Translation)properties.get("translation");
+	    System.out.println(t.translate("client.kicked", socket.getInetAddress().getCanonicalHostName(), t.translate(message, args)));
+	}
 	try {
 	    kick.send();
 	} catch (IOException e) {

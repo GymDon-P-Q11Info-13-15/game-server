@@ -38,6 +38,7 @@ public class Game {
 	    clientB = null;
 	if (hasBothClients())
 	    return;
-	System.out.println("Game ended: " + this);
+	if(leaver.properties.containsKey("translation"))
+	    System.out.println(((Translation)leaver.properties.get("translation")).translate("game.ended", this));
     }
 }
