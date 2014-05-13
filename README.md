@@ -1,7 +1,7 @@
 game-server
 ===========
 
-Default preferences:
+Default [preferences](Game Server/src/de/gymdon/inf1315/game/server/Preferences.java):
 
     {
       "version": 1,
