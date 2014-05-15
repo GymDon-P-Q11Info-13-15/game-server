@@ -8,10 +8,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class Preferences {
-    public static final int CURRENT_VERSION = 1;
+    public static final int CURRENT_VERSION = 2;
     public int version =  CURRENT_VERSION;
     public String server_name = "Game Server";
     public String hostname = "0.0.0.0";
+    public String language = "en";
     public int port = 22422;
     public SSL ssl = new SSL();
     

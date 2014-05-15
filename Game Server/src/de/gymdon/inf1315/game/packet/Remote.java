@@ -12,6 +12,7 @@ import de.gymdon.inf1315.game.Translation;
 
 public abstract class Remote {
 
+    public static boolean isServer;
     private Socket socket;
     private DataInputStream in;
     private DataOutputStream out;

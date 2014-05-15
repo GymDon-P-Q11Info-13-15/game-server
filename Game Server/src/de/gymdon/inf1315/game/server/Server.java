@@ -27,10 +27,13 @@ public class Server implements Runnable {
 	if (instance != null)
 	    throw new RuntimeException("Already running");
 	instance = this;
+	Remote.isServer = true;
 	translation = new Translation("en");
 	this.connectionHandler = new ConnectionHandler(this);
 	this.timer = new Timer(connectionHandler);
 	this.readPreferences();
+	if(!preferences.language.equals("en"))
+	    translation.load(preferences.language);
 	this.run();
     }
     
