@@ -1,10 +1,10 @@
 package de.gymdon.inf1315.game.server;
 
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Random;
 
+import de.gymdon.inf1315.game.packet.NBDataInputStream;
 import de.gymdon.inf1315.game.packet.Packet;
 import de.gymdon.inf1315.game.packet.PacketHeartbeat;
 import de.gymdon.inf1315.game.packet.Remote;
@@ -23,7 +23,7 @@ public class ConnectionHandler {
 	for (Iterator<Remote> i = server.clientList.iterator(); i.hasNext();) {
 	    Remote r = i.next();
 	    try {
-		DataInputStream din = r.getInputStream();
+		NBDataInputStream din = r.getInputStream();
 		if (din.available() >= 2) {
 		    short id = din.readShort();
 		    Packet p = Packet.newPacket(id, r);

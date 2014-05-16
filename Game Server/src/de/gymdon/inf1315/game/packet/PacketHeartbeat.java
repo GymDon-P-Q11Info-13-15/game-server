@@ -1,6 +1,5 @@
 package de.gymdon.inf1315.game.packet;
 
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
@@ -17,7 +16,7 @@ public class PacketHeartbeat extends Packet {
     @Override
     public void handlePacket() throws IOException {
 	super.handlePacket();
-	DataInputStream in = remote.getInputStream();
+	NBDataInputStream in = remote.getInputStream();
 	response = in.readBoolean();
 	payload = new byte[in.readShort()];
 	in.read(payload);

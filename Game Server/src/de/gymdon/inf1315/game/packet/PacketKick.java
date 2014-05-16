@@ -1,6 +1,6 @@
 package de.gymdon.inf1315.game.packet;
 
-import java.io.DataInputStream;
+import java.io.DataInput;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
@@ -19,7 +19,7 @@ public class PacketKick extends Packet {
     @Override
     public void handlePacket() throws IOException {
 	super.handlePacket();
-	DataInputStream in = remote.getInputStream();
+	DataInput in = remote.getInputStream();
 	message = in.readUTF();
 	args = new Gson().fromJson(in.readUTF(), Object[].class);
     }

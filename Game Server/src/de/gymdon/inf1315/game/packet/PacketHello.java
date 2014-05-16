@@ -1,6 +1,6 @@
 package de.gymdon.inf1315.game.packet;
 
-import java.io.DataInputStream;
+import java.io.DataInput;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
@@ -20,7 +20,7 @@ public class PacketHello extends Packet {
     @Override
     public void handlePacket() throws IOException {
 	super.handlePacket();
-	DataInputStream in = remote.getInputStream();
+	DataInput in = remote.getInputStream();
 	serverHello = in.readBoolean();
 	if (serverHello)
 	    serverName = in.readUTF();

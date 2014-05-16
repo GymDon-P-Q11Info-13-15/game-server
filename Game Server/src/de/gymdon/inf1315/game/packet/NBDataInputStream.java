@@ -81,8 +81,7 @@ public class NBDataInputStream implements DataInput {
 
     @Override
     public String readLine() throws IOException {
-	// TODO Auto-generated method stub
-	return null;
+	throw new UnsupportedOperationException("This method is not implemented");
     }
 
     @Override
@@ -126,5 +125,9 @@ public class NBDataInputStream implements DataInput {
     @Override
     public int skipBytes(int n) throws IOException {
 	return inputStream.skipBytes(n);
+    }
+    
+    public int available() throws IOException {
+	return inputStream.available();
     }
 }

@@ -2,7 +2,6 @@ package de.gymdon.inf1315.game.packet;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
@@ -14,7 +13,7 @@ public abstract class Remote {
 
     public static boolean isServer;
     private Socket socket;
-    private DataInputStream in;
+    private NBDataInputStream in;
     private DataOutputStream out;
     private long lastPacket;
     private boolean left = false;
@@ -23,7 +22,7 @@ public abstract class Remote {
     public Remote(Socket s) throws IOException {
 	this.socket = s;
 	out = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-	in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+	in = new NBDataInputStream(new BufferedInputStream(socket.getInputStream()));
     }
 
     public Socket getSocket() {
@@ -36,7 +35,7 @@ public abstract class Remote {
 	return out;
     }
 
-    public DataInputStream getInputStream() {
+    public NBDataInputStream getInputStream() {
 	if (left())
 	    throw new RuntimeException("Client left");
 	return in;
