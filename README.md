@@ -2,17 +2,18 @@ game-server
 ===========
 
 Default [preferences](Game Server/src/de/gymdon/inf1315/game/server/Preferences.java):
-
-    {
-      "version": 1,
-      "server_name": "Game Server",
-      "hostname": "0.0.0.0",
-      "port": 22422,
-      "ssl": {
-        "__comment": "Not implemented",
-        "enabled": false
-      }
-    }
+```json
+{
+  "version": 1,
+  "server_name": "Game Server",
+  "hostname": "0.0.0.0",
+  "port": 22422,
+  "ssl": {
+    "__comment": "Not implemented",
+    "enabled": false
+  }
+}
+```
 
 Test-Server may be online at `pvpctutorials.de:22422`
 
