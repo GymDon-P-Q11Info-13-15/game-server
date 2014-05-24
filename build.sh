@@ -7,5 +7,17 @@ do
 done
 cd "Game Server"
 echo Classpath: $CLASSPATH
+echo Compiling...
 javac -classpath "${CLASSPATH}" -d bin/ src/de/gymdon/inf1315/game/server/Server.java
-cd ..
+cd bin
+for entry in $(cat ../../CLASSPATH)
+do
+	echo Extracting $entry...
+	jar xf ../lib/$entry
+done
+rm -r META-INF
+echo Including res/
+cp -r ../res/* .
+echo Jarring to bin/server.jar
+jar cfe server.jar de.gymdon.inf1315.game.server.Server .
+cd ../..
