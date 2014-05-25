@@ -43,4 +43,13 @@ public class Client extends Remote {
     public boolean isClient() {
 	return true;
     }
+    
+    @Override
+    public void setPing(boolean ping) {
+        super.setPing(ping);
+        if(!ping) {
+            System.out.println(Server.instance.translation.translate("client.new", socket.getInetAddress().getCanonicalHostName()));
+            System.out.flush();
+        }
+    }
 }

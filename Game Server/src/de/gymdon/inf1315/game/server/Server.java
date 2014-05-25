@@ -79,8 +79,6 @@ public class Server implements Runnable {
 		Client c = new Client(s);
 		c.properties.put("translation", translation);
 		clientList.add(c);
-		System.out.println(translation.translate("client.new", s.getInetAddress().getCanonicalHostName()));
-		System.out.flush();
 	    } catch (IOException e) {
 		e.printStackTrace();
 	    }

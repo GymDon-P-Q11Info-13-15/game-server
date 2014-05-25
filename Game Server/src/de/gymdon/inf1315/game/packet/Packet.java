@@ -8,7 +8,7 @@ public abstract class Packet {
 
     public static final short ID = -1;
     public static final Map<Short, Class<? extends Packet>> packetTypes = new HashMap<Short, Class<? extends Packet>>();
-    public static final int PROTOCOL_VERSION = 1;
+    public static final int PROTOCOL_VERSION = 2;
     
     protected Remote remote;
 

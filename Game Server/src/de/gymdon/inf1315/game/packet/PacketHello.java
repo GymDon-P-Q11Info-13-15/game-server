@@ -12,6 +12,7 @@ public class PacketHello extends Packet {
     public boolean serverHello;
     public String serverName;
     public int protocolVersion;
+    public boolean ping;
 
     public PacketHello(Remote r) {
 	super(r);
@@ -28,11 +29,14 @@ public class PacketHello extends Packet {
 	    PacketHello resp = new PacketHello(remote);
 	    resp.serverHello = true;
 	    resp.serverName = Server.instance.preferences.server_name;
+	    resp.ping = false;
 	    resp.send();
 	}
-	int version = in.readInt();
-	if(version != Packet.PROTOCOL_VERSION) {
-	    remote.kick("protocol.version.incompatible", version, Packet.PROTOCOL_VERSION);
+	protocolVersion = in.readInt();
+	ping = in.readBoolean();
+	remote.setPing(ping);
+	if(protocolVersion != Packet.PROTOCOL_VERSION) {
+	    remote.kick("protocol.version.incompatible", protocolVersion, Packet.PROTOCOL_VERSION);
 	}
     }
 
@@ -44,6 +48,7 @@ public class PacketHello extends Packet {
 	if (serverHello)
 	    out.writeUTF(serverName);
 	out.writeInt(Packet.PROTOCOL_VERSION);
+	out.writeBoolean(ping);
 	super.send();
     }
 }
