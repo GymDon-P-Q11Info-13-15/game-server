@@ -1,7 +1,6 @@
 package de.gymdon.inf1315.game.server;
 
 import java.io.DataInputStream;
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.Random;
 
@@ -43,7 +42,7 @@ public class ConnectionHandler {
 		    heartbeat.payload = bytes;
 		    heartbeat.send();
 		}
-	    } catch (IOException e) {
+	    } catch (Exception e) {
 		r.leave(e.getMessage() == null ? e.getClass().getSimpleName() : e.getMessage());
 	    }
 	    if (r.left())
