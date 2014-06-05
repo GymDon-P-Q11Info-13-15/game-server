@@ -1,6 +1,8 @@
 package de.gymdon.inf1315.game.server;
 
 import java.net.*;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
 import java.util.*;
 import java.io.*;
 import java.util.ArrayList;
@@ -62,11 +64,13 @@ public class Server implements Runnable {
 
     public void run() {
 	running = true;
-	ServerSocket ss;
+	ServerSocketChannel ss;
 	try {
-	    ss = new ServerSocket(preferences.port);
+	    ss = ServerSocketChannel.open();
 	    if(!(preferences.hostname.equals("0.0.0.0") || preferences.hostname.equals("*") || preferences.hostname.equals("")))
-		ss.bind(new InetSocketAddress(preferences.hostname, preferences.port));
+		ss.socket().bind(new InetSocketAddress(preferences.hostname, preferences.port));
+	    else
+		ss.socket().bind(new InetSocketAddress(preferences.port));
 	    System.out.println(translation.translate("server.started", preferences.hostname, preferences.port));
 	} catch (IOException e) {
 	    e.printStackTrace();
@@ -75,7 +79,7 @@ public class Server implements Runnable {
 	timer.start();
 	while (running) {
 	    try {
-		Socket s = ss.accept();
+		SocketChannel s = ss.accept();
 		Client c = new Client(s);
 		c.properties.put("translation", translation);
 		clientList.add(c);

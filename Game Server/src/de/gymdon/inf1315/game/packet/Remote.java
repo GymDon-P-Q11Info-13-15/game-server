@@ -6,6 +6,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.nio.channels.SocketChannel;
 import java.util.*;
 
 import de.gymdon.inf1315.game.Translation;
@@ -13,7 +14,7 @@ import de.gymdon.inf1315.game.Translation;
 public abstract class Remote {
 
     public static boolean isServer;
-    protected Socket socket;
+    protected SocketChannel socket;
     protected DataInputStream in;
     protected DataOutputStream out;
     protected long lastPacket;
@@ -21,13 +22,13 @@ public abstract class Remote {
     public Map<String,Object> properties = new HashMap<String,Object>();
     protected boolean ping;
 
-    public Remote(Socket s) throws IOException {
+    public Remote(SocketChannel s) throws IOException {
 	this.socket = s;
 	out = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
 	in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
     }
 
-    public Socket getSocket() {
+    public SocketChannel getSocket() {
 	return socket;
     }
 
