@@ -1,11 +1,7 @@
 package de.gymdon.inf1315.game.packet;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.Socket;
+import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.*;
 
@@ -14,34 +10,26 @@ import de.gymdon.inf1315.game.Translation;
 public abstract class Remote {
 
     public static boolean isServer;
-    protected SocketChannel socket;
-    protected DataInputStream in;
-    protected DataOutputStream out;
+    protected SocketChannel socketChannel;
+    protected ByteBuffer buffer;
     protected long lastPacket;
     protected boolean left = false;
     public Map<String,Object> properties = new HashMap<String,Object>();
     protected boolean ping;
 
     public Remote(SocketChannel s) throws IOException {
-	this.socket = s;
-	out = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-	in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+	this.socketChannel = s;
+	buffer = ByteBuffer.allocate(65536);
     }
 
-    public SocketChannel getSocket() {
-	return socket;
+    public SocketChannel getSocketChannel() {
+	return socketChannel;
     }
 
-    public DataOutputStream getOutputStream() {
+    public ByteBuffer getBuffer() {
 	if (left())
 	    throw new RuntimeException("Client left");
-	return out;
-    }
-
-    public DataInputStream getInputStream() {
-	if (left())
-	    throw new RuntimeException("Client left");
-	return in;
+	return buffer;
     }
 
     public boolean left() {
@@ -59,7 +47,7 @@ public abstract class Remote {
 	if(message == null)
 	    throw new NullPointerException();
 	try {
-	    socket.close();
+	    socketChannel.close();
 	} catch (IOException e) {
 	}
     }
@@ -72,14 +60,14 @@ public abstract class Remote {
 	kick.args = args;
 	if(properties.containsKey("translation")) {
 	    Translation t = (Translation)properties.get("translation");
-	    System.out.println(t.translate("client.kicked", socket.getInetAddress().getCanonicalHostName(), t.translate(message, args)));
+	    System.out.println(t.translate("client.kicked", socketChannel.socket().getInetAddress().getCanonicalHostName(), t.translate(message, args)));
 	}
 	try {
 	    kick.send();
 	} catch (IOException e) {
 	}
 	try {
-	    socket.close();
+	    socketChannel.close();
 	} catch (IOException e) {
 	}
 	left = true;

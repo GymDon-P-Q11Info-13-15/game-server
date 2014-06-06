@@ -31,7 +31,7 @@ public class ConnectionHandler {
 		    else
 			r.kick("Invalid Packet");
 		}
-		if (r.getSocket().isClosed())
+		if (r.getSocketChannel().isClosed())
 		    r.leave("Socket closed");
 		long now = System.currentTimeMillis();
 		if (now - r.getLastPacketTime() >= 2000) {

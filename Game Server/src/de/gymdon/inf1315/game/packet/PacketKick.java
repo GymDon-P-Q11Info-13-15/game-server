@@ -3,6 +3,9 @@ package de.gymdon.inf1315.game.packet;
 import java.io.DataInput;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ShortBuffer;
+import java.nio.channels.SocketChannel;
 
 import com.google.gson.Gson;
 
@@ -19,7 +22,7 @@ public class PacketKick extends Packet {
     @Override
     public void handlePacket() throws IOException {
 	super.handlePacket();
-	DataInput in = remote.getInputStream();
+	ByteBuffer buffer = remote.getBuffer();
 	message = in.readUTF();
 	args = new Gson().fromJson(in.readUTF(), Object[].class);
     }
@@ -27,10 +30,17 @@ public class PacketKick extends Packet {
     @Override
     public void send() throws IOException {
 	super.send();
-	DataOutputStream out = remote.getOutputStream();
-	out.writeShort(ID);
+	SocketChannel socketChannel = remote.getSocketChannel();
+	ByteBuffer buffer = remote.getBuffer();
+	buffer.flip();
+	
+	ShortBuffer shortBuffer = buffer.asShortBuffer();
+	shortBuffer.put(ID);
+	
 	out.writeUTF(message);
 	out.writeUTF(new Gson().toJson(args));
 	super.send();
     }
+    
+    
 }
