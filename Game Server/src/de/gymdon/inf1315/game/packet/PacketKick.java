@@ -22,7 +22,7 @@ public class PacketKick extends Packet {
     @Override
     public void handlePacket() throws IOException {
 	super.handlePacket();
-	ByteBuffer buffer = remote.getBuffer();
+	ByteBuffer buffer = remote.getInBuffer();
 	message = in.readUTF();
 	args = new Gson().fromJson(in.readUTF(), Object[].class);
     }
@@ -31,7 +31,7 @@ public class PacketKick extends Packet {
     public void send() throws IOException {
 	super.send();
 	SocketChannel socketChannel = remote.getSocketChannel();
-	ByteBuffer buffer = remote.getBuffer();
+	ByteBuffer buffer = remote.getInBuffer();
 	buffer.flip();
 	
 	ShortBuffer shortBuffer = buffer.asShortBuffer();

@@ -1,7 +1,6 @@
 package de.gymdon.inf1315.game.packet;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,8 +24,7 @@ public abstract class Packet {
     }
 
     public void send() throws IOException {
-
-	remote.getBuffer().flush();
+	remote.getSocketChannel().write(remote.getOutBuffer());
 	remote.notifyPacket();
     }
 
@@ -59,9 +57,9 @@ public abstract class Packet {
 	}
     }
 
-    protected void putString(String string)
+    protected void writeString(String string)
 	    throws IOException {
-	ByteBuffer buffer = remote.getBuffer();
+	ByteBuffer buffer = remote.getOutBuffer();
 	byte[] bytes;
 	buffer.flip();
 	bytes = string.getBytes("UTF-8");
@@ -70,8 +68,8 @@ public abstract class Packet {
 
     }
 
-    public String getString() throws IOException {
-	ByteBuffer buffer = remote.getBuffer();
+    protected String readString() throws IOException {
+	ByteBuffer buffer = remote.getInBuffer();
 	List<Byte> byteList = new ArrayList<Byte>();
 	byte b;
 	while ((b = buffer.get()) != 0) {
@@ -82,6 +80,84 @@ public abstract class Packet {
 	    byteArray[i] = byteList.get(i);
 	}
 	return new String(byteArray, "UTF-8");
+    }
+    
+    protected void writeBoolean(boolean b) {
+	this.writeByte((byte)(b ? 1 : 0));
+    }
+    
+    protected boolean readBoolean() {
+	return this.readByte() != 0;
+    }
+    
+    protected void writeByte(byte b) {
+	ByteBuffer buffer = remote.getOutBuffer();
+	buffer.flip();
+	buffer.put(b);
+    }
+    
+    protected byte readByte() {
+	return remote.getInBuffer().get();
+    }
+    
+    protected void writeShort(short s) {
+	ByteBuffer buffer = remote.getOutBuffer();
+	buffer.flip();
+	buffer.putShort(s);
+    }
+    
+    protected short readShort() {
+	return remote.getInBuffer().getShort();
+    }
+    
+    protected void writeChar(char c) {
+	ByteBuffer buffer = remote.getOutBuffer();
+	buffer.flip();
+	buffer.putChar(c);
+    }
+    
+    protected char readChar() {
+	return remote.getInBuffer().getChar();
+    }
+    
+    protected void writeInt (int i) {
+	ByteBuffer buffer = remote.getOutBuffer();
+	buffer.flip();
+	buffer.putInt(i);
+    }
+    
+    protected int readInt() {
+	return remote.getInBuffer().getInt();
+    }
+    
+    protected void writeFloat(float f) {
+	ByteBuffer buffer = remote.getOutBuffer();
+	buffer.flip();
+	buffer.putFloat(f);
+    }
+    
+    protected float readFloat() {
+	return remote.getInBuffer().getFloat();
+    }
+    
+    protected void writeLong (long l) {
+	ByteBuffer buffer = remote.getOutBuffer();
+	buffer.flip();
+	buffer.putLong(l);
+    }
+    
+    protected long readLong() {
+	return remote.getInBuffer().getLong();
+    }
+    
+    protected void writeDouble(double d) {
+	ByteBuffer buffer = remote.getOutBuffer();
+	buffer.flip();
+	buffer.putDouble(d);
+    }
+    
+    protected double readDouble() {
+	return remote.getInBuffer().getDouble();
     }
 
     static {

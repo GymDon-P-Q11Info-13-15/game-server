@@ -11,7 +11,8 @@ public abstract class Remote {
 
     public static boolean isServer;
     protected SocketChannel socketChannel;
-    protected ByteBuffer buffer;
+    protected ByteBuffer inBuffer;
+    protected ByteBuffer outBuffer;
     protected long lastPacket;
     protected boolean left = false;
     public Map<String,Object> properties = new HashMap<String,Object>();
@@ -19,17 +20,23 @@ public abstract class Remote {
 
     public Remote(SocketChannel s) throws IOException {
 	this.socketChannel = s;
-	buffer = ByteBuffer.allocate(65536);
+	inBuffer = ByteBuffer.allocate(65536);
     }
 
     public SocketChannel getSocketChannel() {
 	return socketChannel;
     }
 
-    public ByteBuffer getBuffer() {
+    public ByteBuffer getInBuffer() {
 	if (left())
 	    throw new RuntimeException("Client left");
-	return buffer;
+	return inBuffer;
+    }
+    
+    public ByteBuffer getOutBuffer() {
+	if (left())
+	    throw new RuntimeException("Client left");
+	return outBuffer;
     }
 
     public boolean left() {
